@@ -18,6 +18,15 @@ let myLibrary = [];
 let myUsers = [];
 let userRef = '';
 let user;
+let dataRef = db.ref().child('users');
+let userDatabaseData = "";
+let userDatabase = [];
+dataRef.on("child_added" , function(snapshot) {
+  userDatabaseData = snapshot.val();
+  console.log(snapshot.val());
+  userDatabase.push(userDatabaseData);
+});
+console.log(userDatabase);
 
 const btn = document.querySelector("#btn");
 const btnLogin = document.querySelector("#btnLogin");
@@ -97,6 +106,8 @@ const signUpUser = function(username,password) {
 }
 
 function openForm() {
+    closeFormLogin();
+    closeFormSignUp();
     document.getElementById("myForm").style.display = "block";
 }
   
@@ -106,6 +117,8 @@ function closeForm() {
 }
 
 function openFormLogin() {
+  closeForm();
+  closeFormSignUp();
   document.getElementById("loginForm").style.display = "block";
 }
 
@@ -115,6 +128,8 @@ function closeFormLogin() {
 }
 
 function openFormSignUp() {
+  closeForm();
+  closeFormLogin();
   document.getElementById("signupForm").style.display = "block";
 }
 
@@ -164,6 +179,7 @@ function render() {
       databaseData = snapshot.val();
 
       let myLibrary = Object.values(databaseData);
+      console.log(myLibrary);
     for(let i = 0; i < myLibrary.length;i++) {
     const bookCard = document.createElement("div");
     const bookTitle = document.createElement("div");
@@ -236,7 +252,31 @@ btnLogin.addEventListener("click", () => {
   console.log("Clicked");
   let username = document.forms["loginForm"]["username"];
   let password = document.forms["loginForm"]["password"];
+  let flag = 1;
+  for(let i = 0; i < userDatabase.length; i++) {
+    /*console.log(password.value);
+    console.log(userDatabase[i].password);
+    console.log(username.value);
+    console.log(userDatabase[i].username);*/
+    if(userDatabase[i].username == username.value) {
+      if(userDatabase[i].password != password.value) {
+        window.alert("Wrong Password");
+        closeFormLogin();
+        openFormLogin();
+        return;
+      } else {
+        flag = 0;
+      }
+    }
+  }
   
+  if(flag === 1) {
+    window.alert('Login Credentials Error');
+    closeFormLogin();
+    openFormLogin();
+    return;
+  }
+
   console.log("Logged In Phase I");
   loginUser(username.value , password.value);
   render();
@@ -248,6 +288,33 @@ btnSignUp.addEventListener("click", () => {
   console.log("Clicked");
   let username = document.forms["signupForm"]["username"];
   let password = document.forms["signupForm"]["password"];
+
+  if(username.value == "") {
+    window.alert("Enter the valid username");
+    closeFormSignUp();
+    openFormSignUp();
+    return;
+  }
+  
+  for(let i = 0; i < userDatabase.length; i++) {
+    /*console.log(password.value);
+    console.log(userDatabase[i].password);
+    console.log(username.value);
+    console.log(userDatabase[i].username);*/
+    if(userDatabase[i].username == username.value) {
+        window.alert("Username Exists");
+        closeFormSignUp();
+        openFormSignUp();
+        return;
+    }
+  }
+
+  if(password.value == "") {
+    window.alert("Enter the valid password");
+    closeFormSignUp();
+    openFormSignUp();
+    return;
+  }
   
   console.log("Signed Up In Phase I");
   signUpUser(username.value , password.value);
@@ -255,5 +322,3 @@ btnSignUp.addEventListener("click", () => {
   closeFormSignUp();
 
 });
-
-render();
