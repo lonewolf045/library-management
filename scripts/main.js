@@ -57,7 +57,9 @@ function Book(title, author, pages, read) {
   }*/
 };
 
-function User(username, password) {
+function User(fname,lname,username, password) {
+  this.fname = fname;
+  this.lname = lname;
   this.username = username;
   this.password = password;
 }
@@ -79,6 +81,23 @@ Book.prototype.updateRead = function (index) {
     this.read = 'Read';
   refUpdate.update({
     read: this.read
+  });
+}
+
+Book.prototype.updateInfo = function (index,title,author,pages) {
+  //console.log(index, title, author, pages);
+  let arrayKeys = Object.keys(databaseData);
+  let key = arrayKeys[index];
+  let refUpdate = db.ref().child(user.username + "/books/" + key);
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  //console.log(this.title,this.author,this.pages);
+  //console.log(refUpdate);
+  refUpdate.update({
+    title: this.title,
+    author: this.author,
+    pages: this.pages
   });
 }
 
@@ -159,6 +178,15 @@ function closeFormSignUp() {
   clearFormFieldsSignUp();
 }
 
+function openFormUpdate() {
+  document.getElementById("updateForm").style.display = "block";
+}
+
+function closeFormUpdate() {
+  document.getElementById("updateForm").style.display = "none";
+  clearFormFieldsSignUp();
+}
+
 function clearFormFields() {
   document.forms["myForm"].reset();
 }
@@ -169,6 +197,10 @@ function clearFormFieldsLogin() {
 
 function clearFormFieldsSignUp() {
   document.forms["signupForm"].reset();
+}
+
+function clearFormFieldsUpdate() {
+  document.forms["updateForm"].reset();
 }
 
 function pushToDatabase(title, author, pages, read) {
@@ -212,6 +244,7 @@ function render() {
       const bookCardTools = document.createElement("div");
       const bookRead = document.createElement("button");
       const bookTrash = document.createElement("button");
+      const bookUpdate = document.createElement("button");
       //const bookCheckMark = document.createElement("p");
 
       bookCard.classList.add("book-card");
@@ -224,6 +257,7 @@ function render() {
       else
         bookRead.classList.add('not-read');
       bookTrash.classList.add("delete");
+      bookUpdate.classList.add("update");
 
       bookRead.addEventListener('click', (e) => {
         Book.prototype.updateRead(bookCardTools.id);
@@ -235,12 +269,35 @@ function render() {
         render();
       });
 
+      bookUpdate.addEventListener('click',(e) => {
+        console.log("Clicked");
+        let newTitle = document.forms["updateForm"]["title"];
+        let newAuthor = document.forms["updateForm"]["author"];
+        let newPages = document.forms["updateForm"]["pages"];
+        newTitle.value = myLibrary[i].title;
+        newAuthor.value = myLibrary[i].author;
+        newPages.value = myLibrary[i].pages;
+        console.log("Field Filled");
+        openFormUpdate();
+        console.log("form opened");
+        let btnUpdate = document.getElementById('btnUpdate');
+        btnUpdate.addEventListener('click',(e) => {
+          console.log('Clicked');
+          //console.log(newTitle.value,newAuthor.value,newPages.value);
+          Book.prototype.updateInfo(bookCardTools.id,newTitle.value,newAuthor.value,newPages.value);
+          render();
+          console.log("Updated");
+          closeFormUpdate();
+        });
+      });
+
       bookTitle.innerHTML = myLibrary[i].title;
       bookAuthor.innerHTML = myLibrary[i].author;
       bookPages.innerHTML = myLibrary[i].pages + " pages";
       bookCardTools.setAttribute('id', String(i));
       bookRead.innerHTML = myLibrary[i].read;
       bookTrash.innerHTML = 'Delete';
+      bookUpdate.innerHTML = 'Update';
 
       bookCard.appendChild(bookTitle);
       bookCard.appendChild(bookAuthor);
@@ -248,6 +305,7 @@ function render() {
 
       bookCardTools.appendChild(bookRead);
       bookCardTools.appendChild(bookTrash);
+      bookCardTools.appendChild(bookUpdate);
 
       bookCard.appendChild(bookCardTools);
 

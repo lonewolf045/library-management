@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
 
 *{box-sizing: border-box;}
 
@@ -137,7 +140,7 @@ b,label,input {
 }
 
 .book-card {
-    display: grd;
+    display: inline-grid;
     grid-template-rows: 25% 25% 25% 25%;
     flex-direction: column;
     background-color: rgba(255, 191, 128, 0.6);
@@ -152,12 +155,14 @@ b,label,input {
 }
 
 .book-card-tools {
-    display: grid;
+    display: inline-grid;
     grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
     column-gap: 0%;
+    row-gap:0%;
     padding: 0%;
     width: 100%;
-    height: 25%;
+    height: 100%;
     align-items: flex-end;
 }
 
@@ -165,18 +170,42 @@ b,label,input {
     background-color: greenyellow;
     border: none;
     height: 100%;
+    opacity: 0.6;
 }
 
 .not-read {
     background-color: red;
     border: none;
     height: 100%;
+    opacity: 0.6;
 }
 
 .delete {
     background-color: sandybrown;
     border: none;
     height: 100%;
+    opacity: 0.6;
+}
+
+.update {
+  background-color: #555;
+  color: black;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  height: 100%;
+  grid-column-start: 1; 
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  /*position: fixed;
+  top: 23px;
+  right: 180px;
+  width: 140px;*/
+}
+
+.book-card-tools button:hover {
+  opacity: 1;
 }
 
 .open-login-button {
@@ -344,14 +373,83 @@ b,label,input {
 /*Initially Hidden*/
 #logout-button {
   display: none;
-  background-color: #555;
+  background: none;
   color: white;
-  padding: 16px 20px;
   border: none;
+  padding: 0;
+  height: 50px;
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
   top: 23px;
   right: 28px;
-  width: 140px;
+  width: 50px;
+}
+
+.update-form-popup {
+  display: none;
+  position: relative;
+  top: 0;
+  right: 0;
+  left:0;
+  bottom: 0;
+  z-index: 9;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Add styles to the form container */
+.form-container-update {
+  max-width: 300px;
+  padding: 10px;
+  background-color: rgba(155,255,255,0.5);
+  border: 3px solid rgba(145,245,240,0.5);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Full-width input fields */
+.form-container-update input[type=text], .form-container-update input[type=number]{
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container-update input[type=text]:focus, .form-container-update input[type=number]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container-update .btnUpdate {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container-update .cancelUpdate {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container-update .btnUpdate:hover {
+  opacity: 1;
+}
+
+button {
+  font-family: 'Raleway', sans-serif;
 }

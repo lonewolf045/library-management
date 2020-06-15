@@ -81,8 +81,25 @@
             </form>
         </div>
         <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
-        <button id="logout-button">Logout</button>
+        <button id="logout-button"><img src = "https://www.pngfind.com/pngs/b/339-3396821_logout-button-png.png" alt = "Logout" width = "50px" height = "50px"></button>
+        
+        <div class="update-form-popup" id="updateForm">
+            <form action="/action_page.php" class="form-container-update" name = "updateForm">
+                <h1>Update Book</h1>
+  
+                <label for="title"><b>Title</b></label>
+                <input type="text" name="title">
 
+                <label for="author"><b>Author</b></label>
+                <input type="text" name="author">
+  
+                <label for="pages"><b>Pages</b></label>
+                <input type="number" name="pages">
+
+                <button type="button" class="btnUpdate" id = "btnUpdate">Update Book Details</button>
+                <button type="button" class="btnUpdate cancelUpdate" onclick="closeFormUpdate()">Close</button>
+            </form>
+        </div>
   <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase.js"></script>
   <script src = "scripts/main.js"></script>
     </body>
