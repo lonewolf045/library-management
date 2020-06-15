@@ -22,7 +22,7 @@ let dataRef = db.ref().child('users');
 let userDatabaseData = "";
 let userDatabase = [];
 
-dataRef.on("child_added" , function(snapshot) {
+dataRef.on("child_added", function (snapshot) {
   userDatabaseData = snapshot.val();
   //console.log(snapshot.val());
   userDatabase.push(userDatabaseData);
@@ -41,88 +41,100 @@ const formBtn = document.querySelector(".open-button");
 console.log(loginBtn);
 console.log(signUpBtn);
 
-function Book (title, author,pages,read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    /*this.info = function() {
-      let marker;
-      if(read) {
-        marker = 'read';
-      } else {
-        marker = 'not read yet';
-      }
-      return `${title} by ${author}, ${pages} pages, ${marker}`;
-    }*/
+function Book(title, author, pages, read) {
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.read = read;
+  /*this.info = function() {
+    let marker;
+    if(read) {
+      marker = 'read';
+    } else {
+      marker = 'not read yet';
+    }
+    return `${title} by ${author}, ${pages} pages, ${marker}`;
+  }*/
 };
 
-function User (username,password) {
+function User(username, password) {
   this.username = username;
   this.password = password;
 }
-  
-Book.prototype.updateRead = function(index) {
-    /*let marker;
-      if(read) {
-        marker = 'read';
-      } else {
-        marker = 'not read yet';
-      }*/
-    let currentStateRead = this.read;
-    let arrayKeys = Object.keys(databaseData);
-    let key = arrayKeys[index];
-    let refUpdate = db.ref().child(user.username+ "/books/" + key);
-    if(currentStateRead == 'Read')
-        this.read = 'Not Read';
-    else
-        this.read = 'Read';  
-    refUpdate.update({
-      read : this.read
-    });
-  }
 
-  Book.prototype.removeBook = function(index) {
-    /*let i = new Number(index);
-    myLibrary.splice(index,1);
-    localStorage.setItem("MyLibrary", JSON.stringify(myLibrary));*/
-    let arrayKeys = Object.keys(databaseData);
-    let key = arrayKeys[index];
-    let refRemove = db.ref().child(user.username+"/books/" + key);
-    refRemove.remove();
-  }
-
-const addBookToLibrary = function(title,author,pages,read) {
-    let newBook = new Book(title,author,pages,read);
-    myLibrary.push(newBook);
-    pushToDatabase(title,author,pages,read);
+Book.prototype.updateRead = function (index) {
+  /*let marker;
+    if(read) {
+      marker = 'read';
+    } else {
+      marker = 'not read yet';
+    }*/
+  let currentStateRead = this.read;
+  let arrayKeys = Object.keys(databaseData);
+  let key = arrayKeys[index];
+  let refUpdate = db.ref().child(user.username + "/books/" + key);
+  if (currentStateRead == 'Read')
+    this.read = 'Not Read';
+  else
+    this.read = 'Read';
+  refUpdate.update({
+    read: this.read
+  });
 }
 
-const loginUser = function(username,password) {
-  user = new User(username,password);
+Book.prototype.removeBook = function (index) {
+  /*let i = new Number(index);
+  myLibrary.splice(index,1);
+  localStorage.setItem("MyLibrary", JSON.stringify(myLibrary));*/
+  let arrayKeys = Object.keys(databaseData);
+  let key = arrayKeys[index];
+  let refRemove = db.ref().child(user.username + "/books/" + key);
+  refRemove.remove();
+}
+
+const addBookToLibrary = function (title, author, pages, read) {
+  let newBook = new Book(title, author, pages, read);
+  myLibrary.push(newBook);
+  pushToDatabase(title, author, pages, read);
+}
+
+const loginUser = function (username, password) {
+  let fname, lname;
+  for (let i = 0; i < userDatabase.length; i++) {
+    if (userDatabase[i].username == username) {
+      fname = userDatabase[i].fname;
+      lname = userDatabase[i].lname;
+      break;
+    }
+  }
+  user = new User(fname, lname, username, password);
   const use = document.querySelector(".welcome-message");
-  use.innerHTML = "Welcome, " + username;
+  use.innerHTML = "Welcome, " + fname + " " + lname;
   userRef = db.ref().child(username + "/books");
   console.log(userRef);
-  
+
 }
 
-const signUpUser = function(username,password) {
-  let newUser = new User(username,password);
+const signUpUser = function (fname, lname, username, password) {
+  let newUser = new User(fname, lname, username, password);
   myUsers.push(newUser);
-  pushUserToDataBase(username,password);
-  loginUser(username,password);
+  pushUserToDataBase(fname, lname, username, password);
+  /*const use = document.querySelector(".welcome-message");
+  use.innerHTML = "Welcome, " + fname + " " + lname;
+  userRef = db.ref().child(username + "/books");
+  console.log(userRef);*/
+  loginUser(username, password);
 }
 
 function openForm() {
-    closeFormLogin();
-    closeFormSignUp();
-    document.getElementById("myForm").style.display = "block";
+  closeFormLogin();
+  closeFormSignUp();
+  document.getElementById("myForm").style.display = "block";
 }
-  
+
 function closeForm() {
-    document.getElementById("myForm").style.display = "none";
-    clearFormFields();
+  document.getElementById("myForm").style.display = "none";
+  clearFormFields();
 }
 
 function openFormLogin() {
@@ -163,97 +175,99 @@ function pushToDatabase(title, author, pages, read) {
   //let reference = db.ref().child("books");
   let newReference = userRef.push();
   newReference.set({
-      title : title,
-      author : author,
-      pages : pages,
-      read : read
+    title: title,
+    author: author,
+    pages: pages,
+    read: read
   });
 }
 
-function pushUserToDataBase(username,password) {
+function pushUserToDataBase(fname,lname,username, password) {
   let reference = db.ref().child("users");
   let newReference = reference.push();
   newReference.set({
-    username : username,
-    password : password
+    username: username,
+    password: password,
+    lname: lname,
+    fname: fname
   });
 }
 
 function render() {
-    container.innerHTML = "";
-    //let databaseReference = db.ref().child("books");
-    userRef.on("value", function (snapshot) {
+  container.innerHTML = "";
+  //let databaseReference = db.ref().child("books");
+  userRef.on("value", function (snapshot) {
 
-      // Get all the values in the database
-      databaseData = snapshot.val();
+    // Get all the values in the database
+    databaseData = snapshot.val();
 
-      let myLibrary = Object.values(databaseData);
-      console.log(myLibrary);
-    for(let i = 0; i < myLibrary.length;i++) {
-    const bookCard = document.createElement("div");
-    const bookTitle = document.createElement("div");
-    const bookAuthor = document.createElement("div");
-    const bookPages = document.createElement("div");
+    let myLibrary = Object.values(databaseData);
+    console.log(myLibrary);
+    for (let i = 0; i < myLibrary.length; i++) {
+      const bookCard = document.createElement("div");
+      const bookTitle = document.createElement("div");
+      const bookAuthor = document.createElement("div");
+      const bookPages = document.createElement("div");
 
-    const bookCardTools = document.createElement("div");
-    const bookRead = document.createElement("button");
-    const bookTrash = document.createElement("button");
-    //const bookCheckMark = document.createElement("p");
-    
-    bookCard.classList.add("book-card");
-    bookTitle.classList.add("book-detail");
-    bookAuthor.classList.add("book-detail");
-    bookPages.classList.add("book-detail");
-    bookCardTools.classList.add("book-card-tools");
-    if(myLibrary[i].read == 'Read')
+      const bookCardTools = document.createElement("div");
+      const bookRead = document.createElement("button");
+      const bookTrash = document.createElement("button");
+      //const bookCheckMark = document.createElement("p");
+
+      bookCard.classList.add("book-card");
+      bookTitle.classList.add("book-detail");
+      bookAuthor.classList.add("book-detail");
+      bookPages.classList.add("book-detail");
+      bookCardTools.classList.add("book-card-tools");
+      if (myLibrary[i].read == 'Read')
         bookRead.classList.add('read');
-    else
+      else
         bookRead.classList.add('not-read');
-    bookTrash.classList.add("delete");
-    
-    bookRead.addEventListener('click',(e) => {
+      bookTrash.classList.add("delete");
+
+      bookRead.addEventListener('click', (e) => {
         Book.prototype.updateRead(bookCardTools.id);
         render();
-    });
+      });
 
-    bookTrash.addEventListener('click',(e) => {
+      bookTrash.addEventListener('click', (e) => {
         Book.prototype.removeBook(bookCardTools.id);
         render();
-    });
+      });
 
-    bookTitle.innerHTML = myLibrary[i].title;
-    bookAuthor.innerHTML = myLibrary[i].author;
-    bookPages.innerHTML = myLibrary[i].pages + " pages";
-    bookCardTools.setAttribute('id', String(i));
-    bookRead.innerHTML = myLibrary[i].read;
-    bookTrash.innerHTML = 'Delete';
-    
-    bookCard.appendChild(bookTitle);
-    bookCard.appendChild(bookAuthor);
-    bookCard.appendChild(bookPages);
+      bookTitle.innerHTML = myLibrary[i].title;
+      bookAuthor.innerHTML = myLibrary[i].author;
+      bookPages.innerHTML = myLibrary[i].pages + " pages";
+      bookCardTools.setAttribute('id', String(i));
+      bookRead.innerHTML = myLibrary[i].read;
+      bookTrash.innerHTML = 'Delete';
 
-    bookCardTools.appendChild(bookRead);
-    bookCardTools.appendChild(bookTrash);
+      bookCard.appendChild(bookTitle);
+      bookCard.appendChild(bookAuthor);
+      bookCard.appendChild(bookPages);
 
-    bookCard.appendChild(bookCardTools);
+      bookCardTools.appendChild(bookRead);
+      bookCardTools.appendChild(bookTrash);
 
-    container.appendChild(bookCard);
+      bookCard.appendChild(bookCardTools);
+
+      container.appendChild(bookCard);
     }
 
   });
 }
 
 btn.addEventListener("click", () => {
-    console.log("Clicked");
-    let newTitle = document.forms["myForm"]["title"];
-    let newAuthor = document.forms["myForm"]["author"];
-    let newPages = document.forms["myForm"]["pages"];
-    let newRead = document.forms["myForm"]["read"];
+  console.log("Clicked");
+  let newTitle = document.forms["myForm"]["title"];
+  let newAuthor = document.forms["myForm"]["author"];
+  let newPages = document.forms["myForm"]["pages"];
+  let newRead = document.forms["myForm"]["read"];
 
-    console.log("Extracted");
-    addBookToLibrary(newTitle.value, newAuthor.value, newPages.value, newRead.value);
-    render();
-    closeForm();
+  console.log("Extracted");
+  addBookToLibrary(newTitle.value, newAuthor.value, newPages.value, newRead.value);
+  render();
+  closeForm();
 
 });
 
@@ -262,13 +276,13 @@ btnLogin.addEventListener("click", () => {
   let username = document.forms["loginForm"]["username"];
   let password = document.forms["loginForm"]["password"];
   let flag = 1;
-  for(let i = 0; i < userDatabase.length; i++) {
+  for (let i = 0; i < userDatabase.length; i++) {
     /*console.log(password.value);
     console.log(userDatabase[i].password);
     console.log(username.value);
     console.log(userDatabase[i].username);*/
-    if(userDatabase[i].username == username.value) {
-      if(userDatabase[i].password != password.value) {
+    if (userDatabase[i].username == username.value) {
+      if (userDatabase[i].password != password.value) {
         window.alert("Wrong Password");
         closeFormLogin();
         openFormLogin();
@@ -278,8 +292,8 @@ btnLogin.addEventListener("click", () => {
       }
     }
   }
-  
-  if(flag === 1) {
+
+  if (flag === 1) {
     window.alert('Login Credentials Error');
     closeFormLogin();
     openFormLogin();
@@ -287,7 +301,7 @@ btnLogin.addEventListener("click", () => {
   }
 
   console.log("Logged In Phase I");
-  loginUser(username.value , password.value);
+  loginUser(username.value, password.value);
   render();
   closeFormLogin();
   signUpBtn.style.display = "none";
@@ -298,38 +312,40 @@ btnLogin.addEventListener("click", () => {
 
 btnSignUp.addEventListener("click", () => {
   console.log("Clicked");
+  let fname = document.forms["signupForm"]["fname"];
+  let lname = document.forms["signupForm"]["lname"];
   let username = document.forms["signupForm"]["username"];
   let password = document.forms["signupForm"]["password"];
 
-  if(username.value == "") {
+  if (username.value == "") {
     window.alert("Enter the valid username");
     closeFormSignUp();
     openFormSignUp();
     return;
   }
-  
-  for(let i = 0; i < userDatabase.length; i++) {
+
+  for (let i = 0; i < userDatabase.length; i++) {
     /*console.log(password.value);
     console.log(userDatabase[i].password);
     console.log(username.value);
     console.log(userDatabase[i].username);*/
-    if(userDatabase[i].username == username.value) {
-        window.alert("Username Exists");
-        closeFormSignUp();
-        openFormSignUp();
-        return;
+    if (userDatabase[i].username == username.value) {
+      window.alert("Username Exists");
+      closeFormSignUp();
+      openFormSignUp();
+      return;
     }
   }
 
-  if(password.value == "") {
+  if (password.value == "") {
     window.alert("Enter the valid password");
     closeFormSignUp();
     openFormSignUp();
     return;
   }
-  
+
   console.log("Signed Up In Phase I");
-  signUpUser(username.value , password.value);
+  signUpUser(fname.value, lname.value, username.value, password.value);
   render();
   closeFormSignUp();
   signUpBtn.style.display = "none";
@@ -340,7 +356,7 @@ btnSignUp.addEventListener("click", () => {
 
 btnLogout.addEventListener("click", () => {
   console.log("Clicked");
-  user = new User("","");
+  user = new User("", "");
   const use = document.querySelector(".welcome-message");
   use.innerHTML = "";
   container.innerHTML = "";
