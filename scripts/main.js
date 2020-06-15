@@ -21,17 +21,25 @@ let user;
 let dataRef = db.ref().child('users');
 let userDatabaseData = "";
 let userDatabase = [];
+
 dataRef.on("child_added" , function(snapshot) {
   userDatabaseData = snapshot.val();
-  console.log(snapshot.val());
+  //console.log(snapshot.val());
   userDatabase.push(userDatabaseData);
 });
-console.log(userDatabase);
+//console.log(userDatabase);
 
 const btn = document.querySelector("#btn");
 const btnLogin = document.querySelector("#btnLogin");
 const btnSignUp = document.querySelector("#btnSignUp");
 const container = document.querySelector("#container");
+const btnLogout = document.querySelector("#logout-button");
+const loginBtn = document.querySelector(".open-login-button");
+const signUpBtn = document.querySelector(".open-signup-button");
+const formBtn = document.querySelector(".open-button");
+
+console.log(loginBtn);
+console.log(signUpBtn);
 
 function Book (title, author,pages,read) {
     this.title = title;
@@ -96,6 +104,7 @@ const loginUser = function(username,password) {
   use.innerHTML = "Welcome, " + username;
   userRef = db.ref().child(username + "/books");
   console.log(userRef);
+  
 }
 
 const signUpUser = function(username,password) {
@@ -281,7 +290,10 @@ btnLogin.addEventListener("click", () => {
   loginUser(username.value , password.value);
   render();
   closeFormLogin();
-
+  signUpBtn.style.display = "none";
+  loginBtn.style.display = "none";
+  btnLogout.style.display = "block";
+  formBtn.style.display = "block";
 });
 
 btnSignUp.addEventListener("click", () => {
@@ -320,5 +332,21 @@ btnSignUp.addEventListener("click", () => {
   signUpUser(username.value , password.value);
   render();
   closeFormSignUp();
+  signUpBtn.style.display = "none";
+  loginBtn.style.display = "none";
+  btnLogout.style.display = "block";
+  formBtn.style.display = "block";
+});
 
+btnLogout.addEventListener("click", () => {
+  console.log("Clicked");
+  user = new User("","");
+  const use = document.querySelector(".welcome-message");
+  use.innerHTML = "";
+  container.innerHTML = "";
+  console.log("Logged Out");
+  signUpBtn.style.display = "block";
+  loginBtn.style.display = "block";
+  btnLogout.style.display = "none";
+  formBtn.style.display = "none";
 });

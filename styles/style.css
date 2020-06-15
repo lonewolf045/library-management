@@ -6,6 +6,7 @@
 
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
+  display: none; 
   background-color: #555;
   color: white;
   padding: 16px 20px;
@@ -21,10 +22,15 @@
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  position: fixed;
+  position: relative;
+  top: 0;
+  right: 0;
+  left:0;
   bottom: 0;
-  right: 18px;
   z-index: 9;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
 }
 
 /* Add styles to the form container */
@@ -33,6 +39,12 @@
   padding: 10px;
   background-color: rgba(155,255,255,0.5);
   border: 3px solid rgba(145,245,240,0.5);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Full-width input fields */
@@ -175,18 +187,23 @@ b,label,input {
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
-  bottom: 23px;
-  right: 320px;
-  width: 280px;
+  top: 23px;
+  right: 28px;
+  width: 140px;
 }
 
 /* The popup form - hidden by default */
 .login-form-popup {
   display: none;
-  position: fixed;
+  position: relative;
+  top: 0;
+  right: 0;
+  left:0;
   bottom: 0;
-  right: 310px;
   z-index: 9;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
 }
 
 /* Add styles to the form container */
@@ -195,6 +212,12 @@ b,label,input {
   padding: 10px;
   background-color: rgba(155,255,255,0.5);
   border: 3px solid rgba(145,245,240,0.5);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Full-width input fields */
@@ -242,18 +265,23 @@ b,label,input {
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
-  bottom: 23px;
-  right: 610px;
-  width: 280px;
+  top: 23px;
+  right: 180px;
+  width: 140px;
 }
 
 /* The popup form - hidden by default */
 .signup-form-popup {
   display: none;
-  position: fixed;
+  position: relative;
+  top: 0;
+  right: 0;
+  left:0;
   bottom: 0;
-  right: 600px;
   z-index: 9;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
 }
 
 /* Add styles to the form container */
@@ -262,6 +290,12 @@ b,label,input {
   padding: 10px;
   background-color: rgba(155,255,255,0.5);
   border: 3px solid rgba(145,245,240,0.5);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Full-width input fields */
@@ -306,4 +340,18 @@ b,label,input {
   font-style: italic;
   font-size: large;
   font-size: 150%;
+}
+/*Initially Hidden*/
+#logout-button {
+  display: none;
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 23px;
+  right: 28px;
+  width: 140px;
 }
