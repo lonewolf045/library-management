@@ -464,6 +464,7 @@ btnLogin.addEventListener("click", () => {
   formBtn.style.display = "block";
   passUpdateBtn.style.display = "block";
   btnOpen.style.display = "block";
+  profUpdateBtn.style.display = "block";
 });
 
 btnSignUp.addEventListener("click", () => {
@@ -510,6 +511,7 @@ btnSignUp.addEventListener("click", () => {
   formBtn.style.display = "block";
   passUpdateBtn.style.display = "block";
   btnOpen.style.display = "block";
+  profUpdateBtn.style.display = "block";
 });
 
 btnLogout.addEventListener("click", () => {
@@ -525,6 +527,8 @@ btnLogout.addEventListener("click", () => {
   formBtn.style.display = "none";
   passUpdateBtn.style.display = "none";
   btnOpen.style.display = "none";
+  profUpdateBtn.style.display = "none";
+  closeNav();
 });
 
 btnPassUpdate.addEventListener("click", () => {
