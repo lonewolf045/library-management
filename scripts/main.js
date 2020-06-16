@@ -40,6 +40,9 @@ const signUpBtn = document.querySelector(".open-signup-button");
 const formBtn = document.querySelector(".open-button");
 const passUpdateBtn = document.querySelector(".open-uppassword-button");
 const btnPassUpdate = document.querySelector("#btnPassUpdate");
+const btnOpen = document.querySelector('.openbtn');
+const btnProfUpdate = document.querySelector("#btnProfUpdate");
+const profUpdateBtn = document.querySelector('.open-upprofile-button');
 
 console.log(loginBtn);
 console.log(signUpBtn);
@@ -124,6 +127,7 @@ User.prototype.updatePassword = function(newpass) {
       break;
     }
   }
+
   console.log(index);
   let key = arrayKeys[index];
   let refUpdate = db.ref().child('users/' + key);
@@ -132,6 +136,31 @@ User.prototype.updatePassword = function(newpass) {
     password : this.password
   });
   console.log('Changed');
+  console.log(user);
+}
+
+User.prototype.updateProfile = function(fname,lname,username) {
+  console.log('Entered');
+  let arrayKeys = Object.keys(userDatabaseData);
+  console.log(arrayKeys);
+
+  for(let i = 0; i < userDatabase.length; i++) {
+    if(userDatabase[i].username == user.username) {
+      index = i;
+      break;
+    }
+  }
+
+  console.log(index);
+  let key = arrayKeys[index];
+  let refUpdate = db.ref().child('users/' + key);
+  refUpdate.update({
+    fname: user.fname,
+    lname: user.lname,
+  });
+  welcomeMessage();
+  console.log('Changed');
+  console.log(user);
 }
 
 const addBookToLibrary = function (title, author, pages, read) {
@@ -150,8 +179,7 @@ const loginUser = function (username, password) {
     }
   }
   user = new User(fname, lname, username, password);
-  const use = document.querySelector(".welcome-message");
-  use.innerHTML = "Welcome, " + fname + " " + lname;
+  welcomeMessage();
   userRef = db.ref().child(username + "/books");
   console.log(userRef);
 
@@ -166,6 +194,11 @@ const signUpUser = function (fname, lname, username, password) {
   userRef = db.ref().child(username + "/books");
   console.log(userRef);*/
   loginUser(username, password);
+}
+
+const welcomeMessage = function () {
+  const use = document.querySelector(".welcome-message");
+  use.innerHTML = "Welcome, " + user.fname + " " + user.lname;
 }
 
 function openForm() {
@@ -219,6 +252,29 @@ function closeFormPassUpdate() {
   clearFormFieldsPassUpdate();
 }
 
+/* Set the width of the sidebar to 250px (show it) */
+function openNav() {
+  document.getElementById("mySidepanel").style.width = "280px";
+  document.getElementById("container").style.left = "280px";
+  document.getElementById("head").style.left = "40%";
+}
+
+/* Set the width of the sidebar to 0 (hide it) */
+function closeNav() {
+  document.getElementById("mySidepanel").style.width = "0";
+  document.getElementById("container").style.left = "0";
+  document.getElementById("head").style.left = "30%";
+}
+
+function openFormProfUpdate() {
+  document.getElementById("profUpdateForm").style.display = "block";
+}
+
+function closeFormProfUpdate() {
+  document.getElementById("profUpdateForm").style.display = "none";
+  clearFormFieldsProfUpdate();
+}
+
 function clearFormFields() {
   document.forms["myForm"].reset();
 }
@@ -237,6 +293,10 @@ function clearFormFieldsUpdate() {
 
 function clearFormFieldsPassUpdate() {
   document.forms["passUpdateForm"].reset();
+}
+
+function clearFormFieldsProfUpdate() {
+  document.forms["profUpdateForm"].reset();
 }
 
 function pushToDatabase(title, author, pages, read) {
@@ -403,6 +463,7 @@ btnLogin.addEventListener("click", () => {
   btnLogout.style.display = "block";
   formBtn.style.display = "block";
   passUpdateBtn.style.display = "block";
+  btnOpen.style.display = "block";
 });
 
 btnSignUp.addEventListener("click", () => {
@@ -448,6 +509,7 @@ btnSignUp.addEventListener("click", () => {
   btnLogout.style.display = "block";
   formBtn.style.display = "block";
   passUpdateBtn.style.display = "block";
+  btnOpen.style.display = "block";
 });
 
 btnLogout.addEventListener("click", () => {
@@ -462,6 +524,7 @@ btnLogout.addEventListener("click", () => {
   btnLogout.style.display = "none";
   formBtn.style.display = "none";
   passUpdateBtn.style.display = "none";
+  btnOpen.style.display = "none";
 });
 
 btnPassUpdate.addEventListener("click", () => {
@@ -472,7 +535,30 @@ btnPassUpdate.addEventListener("click", () => {
   if(currpass.value != user.password) {
     window.alert("Current Password does not match.");
   } else {
+    user.password = newpass.value;
     User.prototype.updatePassword(newpass.value);
   }
   closeFormPassUpdate();
+});
+
+profUpdateBtn.addEventListener("click", () => {
+  console.log('Clicked');
+  let newFname = document.forms["profUpdateForm"]["fname"];
+  let newLname = document.forms["profUpdateForm"]["lname"];
+  newFname.value = user.fname;
+  newLname.value = user.lname;
+  console.log("Field Filled");
+  openFormProfUpdate();
+  console.log("form opened");
+  btnProfUpdate.addEventListener('click',() => {
+    console.log('Clicked');
+    console.log(newFname.value,newLname.value);
+    user.fname = newFname.value;
+    user.lname = newLname.value;
+    User.prototype.updateProfile();
+    console.log(user);
+    render();
+    console.log("Updated");
+    closeFormProfUpdate();
+  });
 });

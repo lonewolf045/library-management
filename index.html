@@ -7,15 +7,17 @@
     </head>
     <body>
         <header id = 'heading-container'>
-        <h1 id = 'heading'>Library</h1>
-        <p id = 'heading-caption'>Ultimate Book Repository</p>
-        <p class="welcome-message"></p>
+            <div id = "head">
+                <h1 id = 'heading'>Library</h1>
+                <p id = 'heading-caption'>Ultimate Book Repository</p>
+                <p class="welcome-message"></p>
+            </div>
         </header>
         <main>
             <div id = 'container'>
             </div>
         </main>
-        <button class="open-button" onclick="openForm()">Add New Book</button>
+        
         <div class="form-popup" id="myForm">
             <form action="/action_page.php" class="form-container" name = "myForm">
                 <h1>New Book</h1>
@@ -80,6 +82,7 @@
                 <button type="button" class="btnSignUp cancelSignUp" onclick="closeFormSignUp()">Close</button>
             </form>
         </div>
+
         <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
         <button id="logout-button"><img src = "https://www.pngfind.com/pngs/b/339-3396821_logout-button-png.png" alt = "Logout" width = "50px" height = "50px"></button>
         
@@ -100,12 +103,10 @@
                 <button type="button" class="btnUpdate cancelUpdate" onclick="closeFormUpdate()">Close</button>
             </form>
         </div>
-
         
-        <button class="open-uppassword-button" onclick="openFormPassUpdate()">Update Password</button>
         <div class="passupdate-form-popup" id="passUpdateForm">
             <form action="/action_page.php" class="form-container-passupdate" name = "passUpdateForm">
-                <h1>Sign Up</h1>
+                <h1>Update Password</h1>
   
                 <label for="currpass"><b>Current Password</b></label>
                 <input type="password" name="currpass" required>
@@ -116,6 +117,29 @@
                 <button type="button" class="btnPassUpdate" id = "btnPassUpdate">Update</button>
                 <button type="button" class="btnPassUpdate cancelPassUpdate" onclick="closeFormPassUpdate()">Close</button>
             </form>
+        </div>
+
+        <div class="profupdate-form-popup" id="profUpdateForm">
+            <form action="/action_page.php" class="form-container-profupdate" name = "profUpdateForm">
+                <h1>Update Profile</h1>
+  
+                <label for="fname"><b>First Name</b></label>
+                <input type="text" name="fname" required>
+                
+                <label for="lname"><b>Last Name</b></label>
+                <input type="text" name="lname" required>
+
+                <button type="button" class="btnProfUpdate" id = "btnProfUpdate">Update Profile</button>
+                <button type="button" class="btnProfUpdate cancelProfUpdate" onclick="closeFormProfUpdate()">Close</button>
+            </form>
+        </div>
+
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
+        <div id="mySidepanel" class="sidepanel">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <button class="open-button" onclick="openForm()">Add New Book</button>
+            <button class="open-upprofile-button" onclick="openFormProfUpdate()">Update Profile</button>
+            <button class="open-uppassword-button" onclick="openFormPassUpdate()">Update Password</button>
         </div>
 
         <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase.js"></script>
