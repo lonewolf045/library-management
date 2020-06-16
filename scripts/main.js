@@ -21,11 +21,12 @@ let user;
 let dataRef = db.ref().child('users');
 let userDatabaseData = "";
 let userDatabase = [];
+let ref = '';
 
-dataRef.on("child_added", function (snapshot) {
+dataRef.on("value", function (snapshot) {
   userDatabaseData = snapshot.val();
-  //console.log(snapshot.val());
-  userDatabase.push(userDatabaseData);
+  console.log(snapshot.val());
+  userDatabase = Object.values(userDatabaseData);
 });
 //console.log(userDatabase);
 
@@ -37,6 +38,8 @@ const btnLogout = document.querySelector("#logout-button");
 const loginBtn = document.querySelector(".open-login-button");
 const signUpBtn = document.querySelector(".open-signup-button");
 const formBtn = document.querySelector(".open-button");
+const passUpdateBtn = document.querySelector(".open-uppassword-button");
+const btnPassUpdate = document.querySelector("#btnPassUpdate");
 
 console.log(loginBtn);
 console.log(signUpBtn);
@@ -109,6 +112,26 @@ Book.prototype.removeBook = function (index) {
   let key = arrayKeys[index];
   let refRemove = db.ref().child(user.username + "/books/" + key);
   refRemove.remove();
+}
+
+User.prototype.updatePassword = function(newpass) {
+  let arrayKeys = Object.keys(userDatabaseData);
+  console.log(arrayKeys);
+
+  for(let i = 0; i < userDatabase.length; i++) {
+    if(userDatabase[i].username == user.username) {
+      index = i;
+      break;
+    }
+  }
+  console.log(index);
+  let key = arrayKeys[index];
+  let refUpdate = db.ref().child('users/' + key);
+  this.password = newpass;
+  refUpdate.update({
+    password : this.password
+  });
+  console.log('Changed');
 }
 
 const addBookToLibrary = function (title, author, pages, read) {
@@ -187,6 +210,15 @@ function closeFormUpdate() {
   clearFormFieldsSignUp();
 }
 
+function openFormPassUpdate() {
+  document.getElementById("passUpdateForm").style.display = "block";
+}
+
+function closeFormPassUpdate() {
+  document.getElementById("passUpdateForm").style.display = "none";
+  clearFormFieldsPassUpdate();
+}
+
 function clearFormFields() {
   document.forms["myForm"].reset();
 }
@@ -201,6 +233,10 @@ function clearFormFieldsSignUp() {
 
 function clearFormFieldsUpdate() {
   document.forms["updateForm"].reset();
+}
+
+function clearFormFieldsPassUpdate() {
+  document.forms["passUpdateForm"].reset();
 }
 
 function pushToDatabase(title, author, pages, read) {
@@ -366,6 +402,7 @@ btnLogin.addEventListener("click", () => {
   loginBtn.style.display = "none";
   btnLogout.style.display = "block";
   formBtn.style.display = "block";
+  passUpdateBtn.style.display = "block";
 });
 
 btnSignUp.addEventListener("click", () => {
@@ -410,6 +447,7 @@ btnSignUp.addEventListener("click", () => {
   loginBtn.style.display = "none";
   btnLogout.style.display = "block";
   formBtn.style.display = "block";
+  passUpdateBtn.style.display = "block";
 });
 
 btnLogout.addEventListener("click", () => {
@@ -423,4 +461,18 @@ btnLogout.addEventListener("click", () => {
   loginBtn.style.display = "block";
   btnLogout.style.display = "none";
   formBtn.style.display = "none";
+  passUpdateBtn.style.display = "none";
+});
+
+btnPassUpdate.addEventListener("click", () => {
+  console.log("Clicked");
+  let currpass = document.forms["passUpdateForm"]["currpass"];
+  let newpass = document.forms["passUpdateForm"]["newpass"];
+  console.log('Phase 1 initiated');
+  if(currpass.value != user.password) {
+    window.alert("Current Password does not match.");
+  } else {
+    User.prototype.updatePassword(newpass.value);
+  }
+  closeFormPassUpdate();
 });

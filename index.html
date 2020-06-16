@@ -100,7 +100,25 @@
                 <button type="button" class="btnUpdate cancelUpdate" onclick="closeFormUpdate()">Close</button>
             </form>
         </div>
-  <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase.js"></script>
-  <script src = "scripts/main.js"></script>
+
+        
+        <button class="open-uppassword-button" onclick="openFormPassUpdate()">Update Password</button>
+        <div class="passupdate-form-popup" id="passUpdateForm">
+            <form action="/action_page.php" class="form-container-passupdate" name = "passUpdateForm">
+                <h1>Sign Up</h1>
+  
+                <label for="currpass"><b>Current Password</b></label>
+                <input type="password" name="currpass" required>
+
+                <label for="newpass"><b>New Password</b></label>
+                <input type="password" name="newpass" required>
+
+                <button type="button" class="btnPassUpdate" id = "btnPassUpdate">Update</button>
+                <button type="button" class="btnPassUpdate cancelPassUpdate" onclick="closeFormPassUpdate()">Close</button>
+            </form>
+        </div>
+
+        <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase.js"></script>
+        <script src = "scripts/main.js"></script>
     </body>
 </html>  
