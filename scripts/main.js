@@ -378,6 +378,12 @@ function render() {
         console.log("form opened");
         let btnUpdate = document.getElementById('btnUpdate');
         btnUpdate.addEventListener('click',(e) => {
+          if(newTitle.value.length === 0 || newAuthor.value.length === 0 || newPages.value.length === 0) {
+            window.alert('Fill all details');
+            closeFormUpdate();
+            openFormUpdate();
+            return;
+          }
           console.log('Clicked');
           //console.log(newTitle.value,newAuthor.value,newPages.value);
           Book.prototype.updateInfo(bookCardTools.id,newTitle.value,newAuthor.value,newPages.value);
@@ -417,7 +423,12 @@ btn.addEventListener("click", () => {
   let newAuthor = document.forms["myForm"]["author"];
   let newPages = document.forms["myForm"]["pages"];
   let newRead = document.forms["myForm"]["read"];
-
+  if(newTitle.value.length === 0 || newAuthor.value.length === 0 || newPages.value.length === 0 || newRead.value.length === 0) {
+    window.alert('Fill all details');
+    closeForm();
+    openForm();
+    return;
+  }
   console.log("Extracted");
   addBookToLibrary(newTitle.value, newAuthor.value, newPages.value, newRead.value);
   render();
@@ -536,6 +547,12 @@ btnPassUpdate.addEventListener("click", () => {
   let currpass = document.forms["passUpdateForm"]["currpass"];
   let newpass = document.forms["passUpdateForm"]["newpass"];
   console.log('Phase 1 initiated');
+  if(currpass.value.length === 0 || newpass.value.length === 0) {
+    window.alert('Fill all details');
+    closeFormPassUpdate();
+    openFormPassUpdate();
+    return;
+  }
   if(currpass.value != user.password) {
     window.alert("Current Password does not match.");
   } else {
@@ -555,6 +572,12 @@ profUpdateBtn.addEventListener("click", () => {
   openFormProfUpdate();
   console.log("form opened");
   btnProfUpdate.addEventListener('click',() => {
+    if(newFname.value.length === 0 || newLname.value.length === 0) {
+      window.alert('Fill all details');
+      closeFormProfUpdate();
+      openFormProfUpdate();
+      return;
+    }
     console.log('Clicked');
     console.log(newFname.value,newLname.value);
     user.fname = newFname.value;
